@@ -1,0 +1,7 @@
+{
+    "client_id": "XC.com.museum.web",
+    "team_id": "32VZ7FNC96",
+    "key_id": "LRTM4KG66Q",
+    "redirect_uri": "https://example.com/auth",
+    "scope": "name email"
+}
