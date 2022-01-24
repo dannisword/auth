@@ -40,8 +40,7 @@ app.get('/', (req, res) => {
     res.send(`<a href="/auth/google"> Google </a>
               <br/>
               <a href="/auth/line">Line<a>
-              <br/>
-              <a href="/auth/apple">Sign in with Apple</a>`);
+              <br/>`);
 });
 //#region google auth
 app.get('/auth/google',
