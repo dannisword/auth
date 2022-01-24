@@ -22,7 +22,7 @@ console.log(config);
 //let auth = new AppleAuth(config, fs.readFileSync('./config/AuthKey_LRTM4KG66Q.p8').toString(), 'text');
 
 var ip = getIPAdress();
-console.log('Server running at http:' + ip + ':8080/');
+console.log('Server running at http:' + ip + ':3000/');
 
 function isLogin(req, res, next) {
     console.log(req);
@@ -108,7 +108,7 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-http.createServer(app).listen(8080);
+http.createServer(app).listen(3000);
 
 
 function getIPAdress() {
