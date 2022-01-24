@@ -1,3 +1,7 @@
+## init 
+$ mkdir [project name]
+$ npm init -y
+$ npm install express --save
 ## package 
 $ npm install passport
 $ npm install passport-google-oauth20

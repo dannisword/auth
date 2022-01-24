@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
               <br/>
               <a href="/auth/apple">Sign in with Apple</a>`);
 });
-// google auth
+//#region google auth
 app.get('/auth/google',
     passport.authenticate('google', { scope: ['email', 'profile'] })
 );
@@ -54,7 +54,9 @@ app.get('/google/callback',
         failureRedirect: '/auth/failure'
     })
 );
-// line auth
+//#endregion
+
+//#region line
 app.get('/auth/line',
     passport.authenticate('line'),
     function (req, res) {
@@ -67,8 +69,9 @@ app.get('/auth/line/callback',
         successRedirect: '/protected'
     })
 );
+//#endregion
 
-//apple
+//#region apple
 app.get("/auth/apple", passport.authenticate('apple', {
     successRedirect: '/protected',
     failureRedirect: '/auth/failure'
@@ -89,12 +92,14 @@ app.post("/auth/apple/callback", function(req, res, next) {
          }
      })(req, res, next);
  });
+//#endregion
 
 app.get('/auth/failure', (req, res) => {
-    res.send('something went wrong');
+    res.send('驗證錯誤');
 });
 
 app.get('/protected', isLogin, (req, res) => {
+    console.log(req);
     res.send(`Hellow ${req.user.displayName}`);
 });
 
