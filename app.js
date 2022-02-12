@@ -5,20 +5,23 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const fs = require('fs');
 const http = require('http');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 
+const util = require('./src/util.js');
 const config = require('./config/config.json');
-//const config = fs.readFileSync('./config/config.json');
+var routes = require('./routes/index');
+
+//const { runMain } = require('module'); 
 //const AppleAuth = require('apple-auth');
 
 
-//const path = require('path');
 //const routes = require('./routes/index');
+
 require('./auth-google');
 require('./auth-line');
 require('./auth-apple');
-
-console.log(config);
+//console.log(config);
 //let auth = new AppleAuth(config, fs.readFileSync('./config/AuthKey_LRTM4KG66Q.p8').toString(), 'text');
 
 var ip = getIPAdress();
@@ -36,10 +39,20 @@ app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//app.use(express.static(path.join(__dirname, 'public')));
+//app.use('/', routes);
+
+function run() {
+    //util.addOAuth();
+
+}
+
+run();
+
 app.get('/', (req, res) => {
-    res.send(`<a href="/auth/google"> Google </a>
+    res.send(`<a href="/auth/google"><h1>Google</h1> </a>
               <br/>
-              <a href="/auth/line">Line<a>
+              <a href="/auth/line" font-size:large;><h1>Line</h1><a>
               <br/>`);
 });
 //#region google auth
@@ -55,12 +68,9 @@ app.get('/google/callback',
 );
 //#endregion
 
+
 //#region line
-app.get('/auth/line',
-    passport.authenticate('line'),
-    function (req, res) {
-        console.log(res);
-    });
+app.get('/auth/line', passport.authenticate('line'));
 
 app.get('/auth/line/callback',
     passport.authenticate('line', {
@@ -76,21 +86,21 @@ app.get("/auth/apple", passport.authenticate('apple', {
     failureRedirect: '/auth/failure'
 }));
 
-app.post("/auth/apple/callback", function(req, res, next) {
-    passport.authenticate('apple', function(err, user, info) {
-         if (err) {
-             if (err == "AuthorizationError") {
-                 res.send("Oops! Looks like you didn't allow the app to proceed. Please sign in again! <br /> \
+app.post("/auth/apple/callback", function (req, res, next) {
+    passport.authenticate('apple', function (err, user, info) {
+        if (err) {
+            if (err == "AuthorizationError") {
+                res.send("Oops! Looks like you didn't allow the app to proceed. Please sign in again! <br /> \
                  <a href=\"/login\">Sign in with Apple</a>");
-             } else if (err == "TokenError") {
-                 res.send("Oops! Couldn't get a valid token from Apple's servers! <br /> \
+            } else if (err == "TokenError") {
+                res.send("Oops! Couldn't get a valid token from Apple's servers! <br /> \
                  <a href=\"/login\">Sign in with Apple</a>");
-             }
-         } else {
-             res.json(user);
-         }
-     })(req, res, next);
- });
+            }
+        } else {
+            res.json(user);
+        }
+    })(req, res, next);
+});
 //#endregion
 
 app.get('/auth/failure', (req, res) => {
@@ -98,8 +108,8 @@ app.get('/auth/failure', (req, res) => {
 });
 
 app.get('/protected', isLogin, (req, res) => {
-    console.log(req);
-    res.send(`Hellow ${req.user.displayName}`);
+    util.addOAuth(req, res);
+    //res.send(`Hellow ${req.user.displayName}`);
 });
 
 app.get('/logout', function (req, res) {

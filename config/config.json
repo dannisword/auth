@@ -4,5 +4,5 @@
     "key_id": "LRTM4KG66Q",
     "redirect_uri": "https://example.com/auth",
     "scope": "name email",
-    "base_url": "http://47.245.32.42:3010"
+    "base_url": "http://localhost:3000"
 }
